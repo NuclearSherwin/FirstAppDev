@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AppdevPhong.Models;
+using AppdevPhong.Utility;
 
-namespace AppdevPhong.Controllers
+namespace AppdevPhong.Areas.UnAuthenticated.Controller
 {
-    public class HomeController : Controller
+    [Area(SD.Uuthenticated_Area)] //tell the specific for system
+    public class HomeController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly ILogger<HomeController> _logger;
 

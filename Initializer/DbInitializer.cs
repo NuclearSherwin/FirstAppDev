@@ -37,16 +37,16 @@ namespace AppdevPhong.Initializer
             }
             
             // check role existed
-            if(_db.Roles.Any(r=>r.Name == "Admin")) return;
-            if(_db.Roles.Any(r=>r.Name == "Staff")) return;
-            if(_db.Roles.Any(r=>r.Name == "Trainer")) return;
-            if(_db.Roles.Any(r=>r.Name == "Trainee")) return;
+            if(_db.Roles.Any(r=>r.Name == SD.Role_Admin)) return;
+            if(_db.Roles.Any(r=>r.Name == SD.Role_Staff)) return;
+            if(_db.Roles.Any(r=>r.Name == SD.Role_Trainer)) return;
+            if(_db.Roles.Any(r=>r.Name == SD.Role_Trainee)) return;
             
             //create new role
-            _roleManager.CreateAsync(new IdentityRole("Admin")).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole("Staff")).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole("Trainer")).GetAwaiter().GetResult();
-            _roleManager.CreateAsync(new IdentityRole("Trainee")).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Admin)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Staff)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Trainer)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(SD.Role_Trainee)).GetAwaiter().GetResult();
 
             //create new Admin user
             _userManager.CreateAsync(new ApplicationUser()
