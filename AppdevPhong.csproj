@@ -36,6 +36,10 @@
       <_ContentIncludedByDefault Remove="Areas\UnAuthenticated\Views\Shared\_Layout.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\UnAuthenticated\Views\Shared\_LoginPartial.cshtml" />
       <_ContentIncludedByDefault Remove="Areas\UnAuthenticated\Views\Shared\_ValidationScriptsPartial.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\UnAuthenticated\Views\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\UnAuthenticated\Views\Home\Privacy.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Unthenticated\Pages\Home\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Unthenticated\Pages\Home\Privacy.cshtml" />
     </ItemGroup>
 
 </Project>

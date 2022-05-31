@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AppdevPhong.Models;
 using AppdevPhong.Utility;
+using AppDevPhong.Utility;
 
 namespace AppdevPhong.Areas.UnAuthenticated.Controllers
 {
-    [Area(SD.UnAuthenticated_Area)] //tell the specific for system
+    [Area(SD.UnAuthenticated_Area)]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
