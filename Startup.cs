@@ -68,7 +68,7 @@ namespace AppdevPhong
             app.UseRouting();
 
             app.UseAuthentication();
-            app.UseAuthorization();  
+            app.UseAuthorization();
             dbInitializer.Initialize();
 
             app.UseEndpoints(endpoints =>
