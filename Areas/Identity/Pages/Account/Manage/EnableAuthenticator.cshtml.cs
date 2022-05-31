@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace AppdevPhong.Areas.Identity.Pages.Account.Manage
+namespace AppdevKhanhPhong.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
@@ -148,7 +148,7 @@ namespace AppdevPhong.Areas.Identity.Pages.Account.Manage
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("AppdevPhong"),
+                _urlEncoder.Encode("AppdevKhanhPhong"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }

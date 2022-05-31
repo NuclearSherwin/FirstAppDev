@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using AppdevPhong.Models;
 using AppdevPhong.Utility;
+using AppdevPhong.Models;
 using AppDevPhong.Utility;
 
 namespace AppdevPhong.Areas.UnAuthenticated.Controllers

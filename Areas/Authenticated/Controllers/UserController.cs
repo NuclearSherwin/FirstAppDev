@@ -5,24 +5,23 @@ using System.Threading.Tasks;
 using AppdevPhong.Data;
 using AppdevPhong.Utility;
 using AppDevPhong.Utility;
+using AppdevPhong.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using AppdevPhong.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AppdevPhong.Areas.Authenticated.Controllers
 {
-    [Authorize(SD.Authenticated_Area)]
-    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Staff)]
+    [Area(SD.Authenticated_Area)]
+    [Authorize(Roles=SD.Role_Admin +","+ SD.Role_Staff)]
     public class UserController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
 
-        public UserController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager
-            , ApplicationDbContext db)
+        public UserController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -47,10 +46,10 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
 
             if (User.IsInRole(SD.Role_Staff))
             {
-                return View(userList.ToList().Where(u => u.Role != SD.Role_Admin  && u.Role != SD.Role_Staff));
+                return View(userList.ToList().Where(u => u.Role != SD.Role_Admin && u.Role != SD.Role_Staff));
             }
-            
-            return View(userList.ToList().Where(U => U.Role != SD.Role_Trainer));
+
+            return View(userList.ToList().Where(U=> U.Role != SD.Role_Trainee));
         }
 
         // [HttpGet]
@@ -113,7 +112,7 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
 
             if (userNeedToLock.Id == claims.Value)
             {
-                // hien ra loi ban dang lock account cua chinh minh
+                // hieen ra loi ban dang khoa tai khoan cua chinh minh
             }
 
             if (userNeedToLock.LockoutEnd != null && userNeedToLock.LockoutEnd > DateTime.Now)
@@ -137,7 +136,6 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
             {
                 return NotFound();
             }
-
             if (User.IsInRole(SD.Role_Staff))
             {
                 var roleTemp = await _userManager.GetRolesAsync(user);
