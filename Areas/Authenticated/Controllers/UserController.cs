@@ -179,7 +179,8 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
                 {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                    return RedirectToAction("ResetPassword", "User", new { token = token, email = user.Email });
+                    return RedirectToAction("ResetPassword", "User"
+                        , new { token = token, email = user.Email });
                 }
             }
             return View(confirmEmailVm);
