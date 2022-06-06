@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AppdevPhong.Data;
+using AppdevPhong.Models;
 using AppdevPhong.Utility;
 using AppDevPhong.Utility;
 using AppdevPhong.ViewModels;
@@ -224,5 +225,118 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
             }
             return View(resetPasswordViewModel);
         }
+        
+        
+        //edit function
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = _db.ApplicationUsers.Find(id);
+            var roletemp = await _userManager.GetRolesAsync(user);
+            var role =  roletemp.First();
+
+            if (role == SD.Role_Trainer)
+            {
+                return RedirectToAction("EditTrainer", new { id = id });
+            }
+            else if (role == SD.Role_Trainee)
+            {
+                return RedirectToAction("EditTrainee", new { id = id });
+            }
+
+            else
+            {
+                return RedirectToAction("EditAdminStaff", new { id = id });
+            }
+
+        }
+        
+        
+        
+        [HttpGet]
+        public IActionResult EditTrainer(string id)
+        {
+
+                var trainer = _db.Trainers.Find(id);
+                return View(trainer);
+
+        }
+
+        [HttpPost]
+        public IActionResult EditTrainer(Trainer trainer)
+        {
+            if (ModelState.IsValid)
+            {
+                var trainerDb = _db.Trainers.Find(trainer.Id);
+                trainerDb.PhoneNumber = trainer.PhoneNumber;
+                trainerDb.Type = trainer.Type;
+                trainerDb.WorkingPlace = trainer.WorkingPlace;
+
+                _db.Trainers.Update(trainerDb);
+                _db.SaveChanges();
+                
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(trainer);
+        }
+        
+        
+        [HttpGet]
+        public IActionResult EditTrainee(string id)
+        {
+
+            var trainee = _db.Trainees.Find(id);
+            return View(trainee);
+
+        }
+
+        [HttpPost]
+        public IActionResult EditTrainee(Trainee trainee)
+        {
+            if (ModelState.IsValid)
+            {
+                var traineeDb = _db.Trainees.Find(trainee.Id);
+                traineeDb.PhoneNumber = trainee.PhoneNumber;
+                traineeDb.Age = trainee.Age;
+                traineeDb.Department = trainee.Department;
+                traineeDb.Education = trainee.Education;
+                traineeDb.Location = trainee.Location;
+                traineeDb.ToeicScore = trainee.ToeicScore;
+                traineeDb.DateOfBirth = trainee.DateOfBirth;
+                traineeDb.MainProgrammingLanguage = trainee.MainProgrammingLanguage;
+                _db.Trainees.Update(traineeDb);
+                _db.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(trainee);
+        }
+
+        [HttpGet]
+        public IActionResult EditAdminStaff(string id)
+        {
+            var adminStaff = _db.ApplicationUsers.Find(id);
+            return View(adminStaff);
+        }
+
+        [HttpPost]
+        public IActionResult EditAdminStaff(ApplicationUser applicationUser)
+        {
+            if (ModelState.IsValid)
+            {
+                var adminStaffDb = _db.ApplicationUsers.Find(applicationUser.Id);
+                adminStaffDb.Name = applicationUser.Name;
+                _db.ApplicationUsers.Update(adminStaffDb);
+                _db.SaveChanges();
+                
+                return RedirectToAction(nameof(Index));
+                
+            }
+
+            return View(applicationUser);
+        }
+        
     }
 }

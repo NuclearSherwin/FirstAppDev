@@ -14,7 +14,14 @@
         <div class="col-6">
             <h1>User Table</h1>
         </div>
+        <div class="col-6 d-flex justify-content-end align-items-center">
+            <div class="">
+                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </div>
+        </div>
     </div>
+   
+    
     <table class="table">
         <thead>
         <tr>
@@ -37,7 +44,8 @@
                 <td>@obj.Email</td>
                 <td>@obj.Role</td>
                 <td>
-                    @* <a asp-controller="User" asp-action="Update" asp-route-id="@obj.Id" class="btn btn-warning">Update</a> *@
+                    <a asp-controller="User" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-info">Update</a>
+                    
                     @if (obj.LockoutEnd < DateTime.Now || obj.LockoutEnd == null)
                     {
                         <a asp-area="Authenticated" asp-controller="User" asp-action="LockUnlock" asp-route-id="@obj.Id" class="btn btn-warning">Lock</a>
