@@ -1,4 +1,6 @@
-﻿@model AppdevPhong.Models.Trainer
+﻿@using AppdevPhong.Utility
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AppdevPhong.Models.Trainer
 
 <h1>Edit Trainee</h1>
 <form method="post">
@@ -14,9 +16,11 @@
         <span asp-validation-for="WorkingPlace" class="text-danger"></span>
     </div>
      <div class="mb-3">
-            <label asp-for="Type" class="form-label"></label>
-            <input asp-for="Type" class="form-control">
-            <span asp-validation-for="Type" class="text-danger"></span>
+         <label asp-for="Type" class="form-label"></label>
+             <select asp-for="Type" asp-items="Html.GetEnumSelectList<TypeOfTrainer>()" class="form-control">
+                 <option selected="selected" value="">Please Select</option>
+             </select>
+         <span asp-validation-for="Type" class="text-danger"></span>
         </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
