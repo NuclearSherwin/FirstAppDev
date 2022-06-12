@@ -22,7 +22,7 @@
     
     <div class="mb-3">
         <label asp-for="Department" class="form-label"></label>
-        <select asp-for="Department" asp-items="Html.GetEnumSelectList<TypeOfTrainer>()" class="form-control">
+        <select asp-for="Department" asp-items="Html.GetEnumSelectList<Department>()" class="form-control">
             <option selected="selected" value="">Please Select</option>
         </select>
         <span asp-validation-for="Department" class="text-danger"></span>

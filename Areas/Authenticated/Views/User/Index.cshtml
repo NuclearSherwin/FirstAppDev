@@ -20,10 +20,15 @@
             </div>
         </div>
     </div>
-   
+    
+    <div>
+        <form class="form-inline my-2 my-lg-0 float-right">
+            <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
+        </form>
+    </div>
     
     <table class="table">
-        <thead>
+        <thead id="tbHead">
         <tr>
             <th scope="col">#</th>
             <th scope="col">Full Name</th>
@@ -32,7 +37,7 @@
             <th scope="col">Action</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="tblData">
         @{
             var i = 1;
         }
@@ -76,5 +81,18 @@
 else
 {
     <h1>NO any user manage</h1>
+}
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                
+                $("#tblData tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
 }
     

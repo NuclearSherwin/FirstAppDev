@@ -1,5 +1,7 @@
 @page
 @using AppDevPhong.Utility
+@using AppdevPhong.Utility
+@using Humanizer
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
@@ -42,14 +44,10 @@
                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                </div>
                <div class="form-group">
-                   <label asp-for="Input.PhoneNumber"></label>
-                   <input asp-for="Input.PhoneNumber" class="form-control" />
-                   <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-               </div>
-               <div class="form-group">
                    <label asp-for="Input.TypeOfTrainer"></label>
-                   <input asp-for="Input.TypeOfTrainer" class="form-control" />
-                   <span asp-validation-for="Input.TypeOfTrainer" class="text-danger"></span>
+                   <select asp-for="Input.TypeOfTrainer" asp-items="Html.GetEnumSelectList<TypeOfTrainer>()" class="form-control">
+                       <option selected="selected">Please select the type</option>
+                   </select>
                </div>
                <div class="form-group">
                    <label asp-for="Input.WorkingPlace"></label>
@@ -99,8 +97,9 @@
                </div>
                <div class="form-group">
                    <label asp-for="Input.department"></label>
-                   <input asp-for="Input.department" class="form-control" />
-                   <span asp-validation-for="Input.department" class="text-danger"></span>
+                   <select asp-for="Input.department" asp-items="Html.GetEnumSelectList<Department>()" class="form-control">
+                       <option selected="selected" value="">Please select department</option>
+                   </select>
                </div>
                <div class="form-group">
                    <label asp-for="Input.Location"></label>
