@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Course>
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-6">
+        <h1>Course Table</h1>
+    </div>
+    <div class="col-6">
+        <a asp-controller="Courses" asp-action="Upsert" class="btn btn-success">Create New Course</a>
+    </div>
+</div>
+<table class="table">
+
+    <div>
+        <form class="form-inline my-2 my-lg-0 float-right">
+            <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
+        </form>
+    </div>
+
+
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody id="tblData">
+    @foreach (var course in Model)
+    {
+        <tr>
+            <th scope="row">@course.Id</th>
+            <td>@course.Name</td>
+            <td>@course.Description</td>
+            <td>@course.Category.Name</td>
+            <td>
+                <a asp-controller="Courses" asp-action="Upsert" asp-route-id="@course.Id" class="btn btn-warning">Update</a>
+                <a asp-controller="Courses" asp-action="Delete"
+                   onclick="return confirm('Are you sure to delete this category')"
+                   asp-route-id="@course.Id" class="btn btn-danger">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                
+                $("#tblData tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+}

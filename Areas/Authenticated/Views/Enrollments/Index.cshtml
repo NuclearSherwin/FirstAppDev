@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Course>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>CourseList</h2>
+<div class="col-6">
+    <form action="" class="form-inline my-2 my-lg-0 float-right">
+        <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
+    </form>
+</div>
+<br>
+<br>
+@* <!-- <partial name="_StatusMessage" model="@ViewData["Message"]" /> --> *@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Course</th>
+        <th>Category</th>
+        <th>Enroll</th>
+    </tr>
+    </thead>
+    <tbody id="tblData">
+    @foreach (var course in Model)
+    {
+        <tr>
+            <td>@course.Name</td>
+            <td>@course.Category.Name</td>
+            <td>
+                <a asp-controller="Enrollments" asp-action="EnrollTrainee" asp-route-id="@course.Id" class="btn btn-info">Enroll</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function(){
+                $("#myInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#tblData tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+            });
+                });
+    </script>
+}

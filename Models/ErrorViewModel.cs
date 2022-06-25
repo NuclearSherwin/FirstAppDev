@@ -1,5 +1,3 @@
-using System;
-
 namespace AppdevPhong.Models
 {
     public class ErrorViewModel

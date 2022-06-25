@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using AppdevPhong.Models;
-using AppdevPhong.Utility;
+﻿using System.Diagnostics;
 using AppdevPhong.Models;
 using AppDevPhong.Utility;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace AppdevPhong.Areas.UnAuthenticated.Controllers
 {

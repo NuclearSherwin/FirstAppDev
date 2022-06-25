@@ -1,5 +1,5 @@
 ﻿@using AppdevPhong.Utility
-@model AppdevPhong.Models.Trainee
+@model Trainee
 
 <h1>Edit Trainee</h1>
 <form method="post">
@@ -19,7 +19,7 @@
         <input asp-for="Education" class="form-control">
         <span asp-validation-for="Education" class="text-danger"></span>
     </div>
-    
+
     <div class="mb-3">
         <label asp-for="Department" class="form-label"></label>
         <select asp-for="Department" asp-items="Html.GetEnumSelectList<Department>()" class="form-control">
@@ -27,7 +27,7 @@
         </select>
         <span asp-validation-for="Department" class="text-danger"></span>
     </div>
-    
+
     <div class="mb-3">
         <label asp-for="Location" class="form-label"></label>
         <input asp-for="Location" class="form-control">
@@ -48,7 +48,7 @@
         <input asp-for="MainProgrammingLanguage" class="form-control">
         <span asp-validation-for="MainProgrammingLanguage" class="text-danger"></span>
     </div>
-    
+
     // submit
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

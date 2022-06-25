@@ -1,0 +1,65 @@
+﻿@model AppdevPhong.ViewModels.EnrollmentViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>TraineeList</h2>
+<div class="col-6">
+    <form class="form-inline my-2 my-lg-0 float-right">
+        <input id="myInput" class="form-control mr-sm-2" type="text" placeholder="Search">
+    </form>
+</div>
+<br>
+<br>
+
+<table class="table table-bordered">
+    <thead>
+    <th>Name</th>
+    <th>Gmail</th>
+    <th>Action</th>
+    </thead>
+    <tbody id="tblData">
+    @foreach (var item in Model.Trainees)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Email</td>
+            <td>
+                @{
+                    var check = Model.EnrollmentsList.Where(t => t.TraineeId.ToString() == item.Id
+                                                                 && t.CourseId == Model.CourseId);
+                }
+                @if (check.Any())
+                {
+                    <a asp-controller="Enrollments" asp-action="Delete" asp-route-id="@item.Id"
+                       class="btn btn-danger">
+                        Delete
+                    </a>
+                }
+                else
+                {
+                    <a asp-controller="Enrollments" asp-action="Enroll" asp-route-id="@item.Id"
+                       class="btn btn-primary">
+                        Enroll
+                    </a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+@section Scripts
+{
+    <script>$(document).ready(function(){
+                $("#myInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#tblData tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });</script>
+}

@@ -4,40 +4,39 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AppdevPhong.Data;
 using AppdevPhong.Models;
-using AppdevPhong.Utility;
 using AppDevPhong.Utility;
 using AppdevPhong.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AppdevPhong.Areas.Authenticated.Controllers
 {
     [Area(SD.Authenticated_Area)]
-    [Authorize(Roles=SD.Role_Admin +","+ SD.Role_Staff)]
+    [Authorize(Roles = SD.Role_Admin + "," + SD.Role_Staff)]
     public class UserController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public UserController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db)
+        public UserController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _db = db;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             // take current login user id
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
-            
+
             var userList = _db.ApplicationUsers.Where(u => u.Id != claims.Value);
-            
+
             foreach (var user in userList)
             {
                 var userTemp = await _userManager.FindByIdAsync(user.Id);
@@ -46,11 +45,9 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
             }
 
             if (User.IsInRole(SD.Role_Staff))
-            {
                 return View(userList.ToList().Where(u => u.Role != SD.Role_Admin && u.Role != SD.Role_Staff));
-            }
 
-            return View(userList.ToList().Where(U=> U.Role != SD.Role_Trainee));
+            return View(userList.ToList().Where(U => U.Role != SD.Role_Trainee));
         }
 
         // [HttpGet]
@@ -102,7 +99,7 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
         //     
         //     return View(userVm);
         // }
-        
+
         [HttpGet]
         public async Task<IActionResult> LockUnlock(string id)
         {
@@ -117,37 +114,28 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
             }
 
             if (userNeedToLock.LockoutEnd != null && userNeedToLock.LockoutEnd > DateTime.Now)
-            {
                 userNeedToLock.LockoutEnd = DateTime.Now;
-            }
             else
-            {
                 userNeedToLock.LockoutEnd = DateTime.Now.AddYears(1000);
-            }
 
             _db.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            if (user == null) return NotFound();
             if (User.IsInRole(SD.Role_Staff))
             {
                 var roleTemp = await _userManager.GetRolesAsync(user);
                 var role = roleTemp.FirstOrDefault();
-                if (role == SD.Role_Trainer)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+                if (role == SD.Role_Trainer) return RedirectToAction(nameof(Index));
             }
+
             await _userManager.DeleteAsync(user);
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -156,19 +144,16 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
         {
             var user = _db.ApplicationUsers.Find(id);
 
-            if (user == null)
-            {
-                return View();
-            }
+            if (user == null) return View();
 
-            ConfirmEmailVM confirmEmailVm = new ConfirmEmailVM()
+            var confirmEmailVm = new ConfirmEmailVM
             {
                 Email = user.Email
             };
 
             return View(confirmEmailVm);
         }
-        
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM confirmEmailVm)
@@ -176,28 +161,25 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(confirmEmailVm.Email);
-                if ( user!= null)
+                if (user != null)
                 {
                     var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
                     return RedirectToAction("ResetPassword", "User"
-                        , new { token = token, email = user.Email });
+                        , new { token, email = user.Email });
                 }
             }
+
             return View(confirmEmailVm);
         }
-        
+
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ResetPassword(string token, string email)
         {
+            if (token == null || email == null) ModelState.AddModelError("", "Invalid password reset token");
 
-            if (token == null || email == null)
-            {
-                ModelState.AddModelError("", "Invalid password reset token");
-            }
-
-            ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel()
+            var resetPasswordViewModel = new ResetPasswordViewModel
             {
                 Email = email,
                 Token = token
@@ -205,7 +187,7 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
 
             return View(resetPasswordViewModel);
         }
-        
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel resetPasswordViewModel)
@@ -217,48 +199,35 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
                 {
                     var result = await _userManager.ResetPasswordAsync(user, resetPasswordViewModel.Token,
                         resetPasswordViewModel.Password);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
+                    if (result.Succeeded) return RedirectToAction(nameof(Index));
                 }
             }
+
             return View(resetPasswordViewModel);
         }
-        
-        
+
+
         //edit function
         public async Task<IActionResult> Edit(string id)
         {
             var user = _db.ApplicationUsers.Find(id);
             var roletemp = await _userManager.GetRolesAsync(user);
-            var role =  roletemp.First();
+            var role = roletemp.First();
 
             if (role == SD.Role_Trainer)
-            {
-                return RedirectToAction("EditTrainer", new { id = id });
-            }
-            else if (role == SD.Role_Trainee)
-            {
-                return RedirectToAction("EditTrainee", new { id = id });
-            }
+                return RedirectToAction("EditTrainer", new { id });
+            if (role == SD.Role_Trainee)
+                return RedirectToAction("EditTrainee", new { id });
 
-            else
-            {
-                return RedirectToAction("EditAdminStaff", new { id = id });
-            }
-
+            return RedirectToAction("EditAdminStaff", new { id });
         }
-        
-        
-        
+
+
         [HttpGet]
         public IActionResult EditTrainer(string id)
         {
-
-                var trainer = _db.Trainers.Find(id);
-                return View(trainer);
-
+            var trainer = _db.Trainers.Find(id);
+            return View(trainer);
         }
 
         [HttpPost]
@@ -273,22 +242,20 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
 
                 _db.Trainers.Update(trainerDb);
                 _db.SaveChanges();
-                
+
 
                 return RedirectToAction(nameof(Index));
             }
 
             return View(trainer);
         }
-        
-        
+
+
         [HttpGet]
         public IActionResult EditTrainee(string id)
         {
-
             var trainee = _db.Trainees.Find(id);
             return View(trainee);
-
         }
 
         [HttpPost]
@@ -330,13 +297,11 @@ namespace AppdevPhong.Areas.Authenticated.Controllers
                 adminStaffDb.Name = applicationUser.Name;
                 _db.ApplicationUsers.Update(adminStaffDb);
                 _db.SaveChanges();
-                
+
                 return RedirectToAction(nameof(Index));
-                
             }
 
             return View(applicationUser);
         }
-        
     }
 }

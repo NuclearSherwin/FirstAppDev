@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AppdevPhong.Models;
+﻿using AppdevPhong.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +10,7 @@ namespace AppdevPhong.Data
             : base(options)
         {
         }
+
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Trainee> Trainees { get; set; }
